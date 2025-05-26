@@ -329,7 +329,7 @@
       <input type="text" id="nome" placeholder="Digite seu nome">
 
       <label for="velocidade">Velocidade da leitura</label>
-      <input type="range" id="velocidade" min="0.5" max="2" step="0.1" value="1" oninput="ajustarVelocidade(this.value)">
+      <input type="range" id="velocidade" min="0.5" max="2" step="0.1" value="1.2" oninput="ajustarVelocidade(this.value)">
 
       <label for="contraste">Contraste da tela</label>
       <input type="range" id="contraste" min="0" max="100" value="50" oninput="ajustarContraste(this.value)">
@@ -441,7 +441,7 @@ document.getElementById('meuBotao').addEventListener(
 
   <script>
     // Variáveis globais
-    let velocidadeFala = 0.8;
+    let velocidadeFala = 1.2;
     let nomeUsuario = '';
     let progressoUsuario = {
       aulas_concluidas: 0,
