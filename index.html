@@ -432,7 +432,7 @@ document.getElementById('meuBotao').addEventListener(
   <div class="button-group">
   <button onclick="executarHtml()">Executar</button>
   <button onclick="iniciarDitado()">Ditar</button>
-  <button onclick="apagarCaractere()">Apagar</button>
+  <button onclick="apagarCaractereComCursor()">Apagar</button>
   <button onclick="irPara('tela3')">Voltar</button>
 </div>
 
@@ -785,12 +785,27 @@ function lerConteudoAtual() {
   });
   lerTexto(textoParaLer);
 }
-function apagarCaractere() {
+
+function apagarCaractereComCursor() {
   const textarea = document.getElementById('editorHtml');
-  const texto = textarea.value;
-  if (texto.length > 0) {
-    textarea.value = texto.slice(0, -1); // remove o último caractere
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+
+  // Se há uma seleção, apaga tudo selecionado
+  if (start !== end) {
+    const antes = textarea.value.slice(0, start);
+    const depois = textarea.value.slice(end);
+    textarea.value = antes + depois;
+    textarea.selectionStart = textarea.selectionEnd = start;
+  } else if (start > 0) {
+    // Apaga um caractere antes do cursor
+    const antes = textarea.value.slice(0, start - 1);
+    const depois = textarea.value.slice(end);
+    textarea.value = antes + depois;
+    textarea.selectionStart = textarea.selectionEnd = start - 1;
   }
+
+  textarea.focus();
 }
 
 </script>
