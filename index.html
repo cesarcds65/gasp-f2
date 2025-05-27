@@ -450,6 +450,9 @@ document.getElementById('meuBotao').addEventListener(
 </div>
 
   <script>
+
+    const telas = ['tela1', 'tela2', 'tela3', 'tela4', 'telaDesenvolver'];
+
     // Variáveis globais
     let velocidadeFala = 1.2;
     let nomeUsuario = '';
@@ -512,20 +515,30 @@ document.getElementById('meuBotao').addEventListener(
     }
 
     // Navegação entre telas
-    function irPara(telaId) {
-      // Esconde todas as telas
-      document.querySelectorAll('.container').forEach(div => div.classList.remove('active'));
-      // Mostra a tela selecionada
-      document.getElementById(telaId).classList.add('active');
-      if (leituraAtiva) setTimeout(lerConteudoAtual, 300);
-      
-      // Ações específicas para cada tela
-      if (telaId === 'tela3' && nomeUsuario) {
-        const mensagem = document.querySelector('#tela3 .speech-box p');
-        mensagem.textContent = `Olá ${nomeUsuario}! Vamos começar com os conceitos básicos de HTML, CSS e JavaScript.`;
-        lerTexto(mensagem.textContent);
-      }
-      
+    function irPara(telaId, registrarHistorico = true) {
+  document.querySelectorAll('.container').forEach(div => div.classList.remove('active'));
+  document.getElementById(telaId).classList.add('active');
+
+  if (leituraAtiva) setTimeout(lerConteudoAtual, 300);
+
+  if (registrarHistorico) {
+    history.pushState({ tela: telaId }, '', '');
+  }
+
+  // Se quiser: lógica personalizada por tela
+  if (telaId === 'tela3' && nomeUsuario) {
+    const mensagem = document.querySelector('#tela3 .speech-box p');
+    mensagem.textContent = `Olá ${nomeUsuario}! Vamos começar com os conceitos básicos de HTML, CSS e JavaScript.`;
+    if (!leituraAtiva) lerTexto(mensagem.textContent);
+  }
+}
+
+    window.addEventListener('popstate', function(event) {
+  if (event.state && event.state.tela) {
+    irPara(event.state.tela, false); // não adiciona no histórico novamente
+  }
+});
+    
       // Registra a navegação no banco de dados
       registrarNavegacao(telaId);
     }
