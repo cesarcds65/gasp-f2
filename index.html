@@ -443,10 +443,12 @@ document.getElementById('meuBotao').addEventListener(
 </iframe>
 
 <div id="exportarContainer"
-     style="display: flex; align-items: center; gap: 10px; margin-top: 12px; justify-content: flex-start; visibility: hidden;">
-  <button onclick="exportarCodigo()" style="background: none; border: none; cursor: pointer;" title="Exportar HTML">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="32" height="32" viewBox="0 0 24 24"
-         style="color: var(--primary-color); transform: rotate(90deg);">
+     style="display: flex; align-items: center; gap: 6px; margin-top: 12px; visibility: hidden;">
+  <button onclick="exportarCodigo()"
+          style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; display: flex; align-items: center; line-height: 0;"
+          title="Exportar HTML">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"
+         style="color: var(--primary-color); transform: rotate(90deg); vertical-align: middle; width: 24px; height: 24px;">
       <path d="M5 20h14v-2H5v2zm7-18L5.33 9h3.34v4h4.66V9h3.34L12 2z"/>
     </svg>
   </button>
