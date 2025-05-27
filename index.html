@@ -733,12 +733,52 @@ function ajustarFonteGlobal(valor) {
 }
 
 function iniciarDitado() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-  if (!SpeechRecognition) {
-    alert("Seu navegador não suporta reconhecimento de voz.");
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    alert("Seu navegador não suporta ditado por voz.");
     return;
   }
+
+  const reconhecimento = new SR();
+  reconhecimento.lang = 'pt-BR';
+  reconhecimento.interimResults = false;
+  reconhecimento.continuous = false;
+  reconhecimento.maxAlternatives = 1;
+
+  reconhecimento.onresult = function(event) {
+    let comando = event.results[0][0].transcript.trim().toLowerCase();
+    const textarea = document.getElementById('editorHtml');
+    const cursorPos = textarea.selectionStart;
+
+    // Interpreta comandos do tipo: "abrir tag h1 Olá Mundo fechar tag h1"
+    if (comando.startsWith("abrir tag")) {
+      // extrai a tag e o conteúdo
+      const abrirMatch = comando.match(/abrir tag (\w+)\s+(.*?)\s+fechar tag \1/);
+      if (abrirMatch) {
+        const tag = abrirMatch[1];
+        const conteudo = abrirMatch[2];
+        comando = `<${tag}>${conteudo}</${tag}>`;
+      }
+    }
+
+    // Insere no editor onde estiver o cursor
+    const antes = textarea.value.slice(0, cursorPos);
+    const depois = textarea.value.slice(cursorPos);
+    textarea.value = antes + comando + depois;
+
+    // Reposiciona o cursor
+    const novaPosicao = cursorPos + comando.length;
+    textarea.selectionStart = textarea.selectionEnd = novaPosicao;
+
+    textarea.focus();
+  };
+
+  reconhecimento.onerror = function(event) {
+    alert("Erro no reconhecimento de voz: " + event.error);
+  };
+
+  reconhecimento.start();
+}
 
   const reconhecimento = new SpeechRecognition();
   reconhecimento.lang = 'pt-BR'; // Começa com pt-BR, mas podemos adaptar depois
