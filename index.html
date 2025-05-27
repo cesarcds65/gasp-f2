@@ -440,13 +440,16 @@ document.getElementById('meuBotao').addEventListener(
   <iframe id="previewHtml" style="width: 100%; height: 300px; border: 1px solid #ccc; border-radius: 8px; background-color: white;"></iframe>
 </div>
 
-<div id="exportarContainer" style="display: none; text-align: center; margin-top: 20px;">
+div id="exportarContainer" style="display: none; display: flex; align-items: center; gap: 10px; margin-top: 20px;">
   <button onclick="exportarCodigo()" style="background: none; border: none; cursor: pointer;" title="Exportar HTML">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="64" height="64" viewBox="0 0 24 24" style="color: var(--primary-color);">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="32" height="32" viewBox="0 0 24 24"
+         style="color: var(--primary-color); transform: rotate(90deg); transition: transform 0.3s;">
       <path d="M5 20h14v-2H5v2zm7-18L5.33 9h3.34v4h4.66V9h3.34L12 2z"/>
     </svg>
   </button>
+  <span style="color: var(--primary-color); font-weight: bold; font-size: 1rem;">Exportar código</span>
 </div>
+  
   <script>
     // Variáveis globais
     let velocidadeFala = 1.2;
@@ -719,7 +722,7 @@ function executarHtml() {
   preview.srcdoc = codigo;
 
   const container = document.getElementById('exportarContainer');
-  container.style.display = codigo ? 'block' : 'none';
+  container.style.display = codigo ? 'flex' : 'none';
 }
 
 function ajustarFonteGlobal(valor) {
