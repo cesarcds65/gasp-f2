@@ -433,7 +433,7 @@ document.getElementById('meuBotao').addEventListener(
   <button onclick="executarHtml()">Executar</button>
   <button onclick="iniciarDitado()">Ditar</button>
   <button onclick="apagarCaractereComCursor()">Apagar</button>
-  <button onclick="irPara('tela3')">Voltar</button>
+  <button onclick="inserirEsqueletoHtml()">Código</button>
 </div>
 
   <h3 style="margin-top: 20px; margin-bottom: 8px;">Visualização:</h3>
@@ -847,6 +847,35 @@ function exportarCodigo() {
   link.click();
 
   URL.revokeObjectURL(url);
+}
+
+function inserirEsqueletoHtml() {
+  const modelo = `<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escreva aqui o título da sua página</title> <!-- Título da aba do navegador -->
+</head>
+<body>
+
+    <h1>Escreva aqui o título principal da sua página</h1> <!-- Título visível na página -->
+
+    <p>Escreva aqui o parágrafo de sua página</p> <!-- Parágrafo com seu conteúdo -->
+
+</body>
+</html>`;
+
+  const textarea = document.getElementById('editorHtml');
+  const cursorPos = textarea.selectionStart;
+  const antes = textarea.value.slice(0, cursorPos);
+  const depois = textarea.value.slice(cursorPos);
+
+  textarea.value = antes + modelo + depois;
+
+  // Atualiza posição do cursor
+  textarea.selectionStart = textarea.selectionEnd = cursorPos + modelo.length;
+  textarea.focus();
 }
 
 </script>
