@@ -531,16 +531,15 @@ document.getElementById('meuBotao').addEventListener(
     mensagem.textContent = `Olá ${nomeUsuario}! Vamos começar com os conceitos básicos de HTML, CSS e JavaScript.`;
     if (!leituraAtiva) lerTexto(mensagem.textContent);
   }
+     registrarNavegacao(telaId);
 }
-
+    
     window.addEventListener('popstate', function(event) {
   if (event.state && event.state.tela) {
     irPara(event.state.tela, false); // não adiciona no histórico novamente
   }
 });
     
-      // Registra a navegação no banco de dados
-      registrarNavegacao(telaId);
     }
 
     // Validação do formulário da tela 2
@@ -892,5 +891,8 @@ function inserirEsqueletoHtml() {
 }
 
 </script>
+
+history.replaceState({ tela: 'tela1' }, '', '');
+  
 </body>
 </html>
