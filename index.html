@@ -443,18 +443,10 @@ document.getElementById('meuBotao').addEventListener(
 </iframe>
 
 <!-- Botão exportar abaixo do preview, alinhado à esquerda -->
-<div id="exportarContainer"
-     style="display: flex; flex-direction: column; align-items: center; margin-top: 12px; visibility: hidden;">
-  <button onclick="exportarCodigo()"
-          style="background: none; border: none; cursor: pointer;" title="Exportar HTML">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="48" height="48" viewBox="0 0 24 24"
-         style="color: var(--primary-color); transform: rotate(90deg);">
-      <path d="M5 20h14v-2H5v2zm7-18L5.33 9h3.34v4h4.66V9h3.34L12 2z"/>
-    </svg>
-  </button>
-  <span style="color: var(--primary-color); font-weight: bold; font-size: 1rem; margin-top: 4px; white-space: nowrap;">
+<div id="exportarContainer" style="display: none; text-align: center; margin-top: 16px;">
+  <button onclick="exportarCodigo()" style="padding: 12px 24px; font-size: 1rem; font-weight: bold; background-color: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer;">
     Exportar código
-  </span>
+  </button>
 </div>
 
   <script>
@@ -730,8 +722,8 @@ function executarHtml() {
 
   preview.srcdoc = codigo;
 
-  // Só mostra o botão se houver código válido
-  container.style.visibility = codigo ? 'visible' : 'hidden';
+  // Mostrar o botão exportar se houver código
+  container.style.display = codigo ? 'block' : 'none';
 }
 
 function ajustarFonteGlobal(valor) {
