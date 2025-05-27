@@ -720,16 +720,23 @@ function executarHtml() {
   const preview = document.getElementById('previewHtml');
   const container = document.getElementById('exportarContainer');
 
-  preview.srcdoc = codigo;
+  // Validação do código HTML
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = codigo;
 
-  // Mostrar o botão exportar se houver código
-  container.style.display = codigo ? 'block' : 'none';
-}
+  // Verifica se há pelo menos 1 elemento HTML válido
+  const ehValido = Array.from(wrapper.childNodes).some(node =>
+    node.nodeType === 1 && /^[a-z]+$/i.test(node.nodeName)
+  );
 
-function ajustarFonteGlobal(valor) {
-  document.querySelectorAll('body, h1, h2, h3, p, label, input, textarea, button').forEach(el => {
-    el.style.fontSize = valor + 'px';
-  });
+  if (ehValido) {
+    preview.srcdoc = codigo;
+    container.style.display = 'block';
+  } else {
+    preview.srcdoc = ''; // limpa o preview
+    container.style.display = 'none';
+    alert("Código inválido. Digite HTML válido como <h1>, <p>, <div> etc.");
+  }
 }
 
 function iniciarDitado() {
