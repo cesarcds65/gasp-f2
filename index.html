@@ -437,7 +437,17 @@ document.getElementById('meuBotao').addEventListener(
 </div>
 
   <h3 style="margin-top: 20px;">Visualização:</h3>
-  <iframe id="previewHtml" style="width: 100%; height: 300px; border: 1px solid #ccc; border-radius: 8px; background-color: white;"></iframe>
+<div style="display: flex; gap: 16px; align-items: flex-start;">
+  <div id="exportarContainer" style="display: flex; align-items: center; gap: 8px; visibility: hidden;">
+    <button onclick="exportarCodigo()" style="background: none; border: none; cursor: pointer;" title="Exportar HTML">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="32" height="32" viewBox="0 0 24 24"
+           style="color: var(--primary-color); transform: rotate(90deg);">
+        <path d="M5 20h14v-2H5v2zm7-18L5.33 9h3.34v4h4.66V9h3.34L12 2z"/>
+      </svg>
+    </button>
+    <span style="color: var(--primary-color); font-weight: bold; white-space: nowrap;">Exportar código</span>
+  </div>
+  <iframe id="previewHtml" style="flex: 1; height: 300px; border: 1px solid #ccc; border-radius: 8px; background-color: white;"></iframe>
 </div>
 
 <div id="exportarContainer" style="display: none; display: flex; align-items: center; gap: 10px; margin-top: 20px;">
@@ -719,10 +729,16 @@ document.getElementById('meuBotao').addEventListener(
 function executarHtml() {
   const codigo = document.getElementById('editorHtml').value.trim();
   const preview = document.getElementById('previewHtml');
+  const container = document.getElementById('exportarContainer');
+
   preview.srcdoc = codigo;
 
-  const container = document.getElementById('exportarContainer');
-  container.style.display = codigo ? 'flex' : 'none';
+  // Aguarda renderização do iframe
+  setTimeout(() => {
+    // Verifica se algo foi realmente renderizado
+    const temConteudo = codigo.length > 0 && !/^\s*$/.test(codigo);
+    container.style.visibility = temConteudo ? 'visible' : 'hidden';
+  }, 300); // espera 300ms para garantir carregamento
 }
 
 function ajustarFonteGlobal(valor) {
