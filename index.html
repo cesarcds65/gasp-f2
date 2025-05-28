@@ -293,9 +293,15 @@
   <p class="welcome-text">Bem-vindo(a) ao VOZETA!</p>
   <p class="description">Uma plataforma feita para você aprender programação de forma acessível, guiada por voz e adaptada às suas necessidades.</p>
 
-  <!-- NOVO SLIDER GLOBAL DE FONTE -->
-  <input type="range" id="sliderFonteGlobal" min="12" max="28" value="16" oninput="ajustarFonteGlobal(this.value)">
-  <p class="description">Aumentar tamanho do texto</p>
+  <!-- NOVO SLIDER GLOBAL DE FONTE ATUALIZADO -->
+  <input type="range" id="tamanhoTexto" min="12" max="24" value="16" step="1"
+       oninput="ajustarFonteGlobal(this.value)"
+       style="width: 100%; appearance: none; height: 8px; border-radius: 5px;
+              background: linear-gradient(to right, #007acc 33%, #ccc 33%);
+              outline: none; transition: background 0.3s;">
+<label for="tamanhoTexto" style="display: block; text-align: left; font-weight: bold; margin-top: 8px;">
+  Tamanho do texto
+</label>
 
   <button onclick="ativarLeituraGlobal()">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 10px;">
@@ -497,6 +503,18 @@ document.getElementById('meuBotao').addEventListener(
         alert("Seu navegador não suporta leitura em voz alta.");
       }
     }
+    // Função aumentar texto global
+    function ajustarFonteGlobal(valor) {
+  document.querySelectorAll('*').forEach(el => {
+    el.style.fontSize = valor + 'px';
+  });
+
+  const slider = document.getElementById('tamanhoTexto');
+  if (slider) {
+    const percent = ((valor - slider.min) / (slider.max - slider.min)) * 100;
+    slider.style.background = `linear-gradient(to right, #007acc ${percent}%, #ccc ${percent}%)`;
+  }
+}
 
     // Ajuste de velocidade da fala
     function ajustarVelocidade(valor) {
@@ -889,9 +907,27 @@ function inserirEsqueletoHtml() {
   textarea.focus();
 }
 
-</script>
+    document.addEventListener('DOMContentLoaded', function() {
+  // 1. Carrega vozes de leitura (necessário em alguns navegadores)
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = function() {
+      window.speechSynthesis.getVoices();
+    };
+  }
 
-history.replaceState({ tela: 'tela1' }, '', '');
+  // 2. Inicializa gradiente e fonte do slider de texto
+  const slider = document.getElementById('tamanhoTexto');
+  if (slider) {
+    const percent = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+    slider.style.background = `linear-gradient(to right, #007acc ${percent}%, #ccc ${percent}%)`;
+    ajustarFonteGlobal(slider.value); // aplica valor inicial
+  }
+
+  // 3. Inicia histórico na tela1
+  history.replaceState({ tela: 'tela1' }, '', '');
+});
+
+</script>
   
 </body>
 </html>
