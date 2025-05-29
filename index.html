@@ -516,7 +516,9 @@ document.getElementById('meuBotao').addEventListener(
   }
 }
 
-    function configurarLeituraPorHover() {
+   function configurarLeituraPorHover() {
+  let timer = null;
+
   document.body.addEventListener('mouseover', function (event) {
     if (!leituraAtiva) return;
 
@@ -534,11 +536,19 @@ document.getElementById('meuBotao').addEventListener(
     }
 
     if (texto) {
-      lerTexto(texto);
+      // Cancela qualquer leitura anterior pendente
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        lerTexto(texto);
+      }, 1000); // aguarda 1 segundo parado no elemento
     }
   });
-}
 
+  // Se mover o mouse para outro elemento, cancela o timer
+  document.body.addEventListener('mouseout', function () {
+    clearTimeout(timer);
+  });
+}
     
     // Ajuste de velocidade da fala
     function ajustarVelocidade(valor) {
