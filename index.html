@@ -749,23 +749,39 @@ function executarHtml() {
   const preview = document.getElementById('previewHtml');
   const container = document.getElementById('exportarContainer');
 
-  // Validação do código HTML
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = codigo;
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(codigo, 'text/html');
 
-  // Verifica se há pelo menos 1 elemento HTML válido
-  const ehValido = Array.from(wrapper.childNodes).some(node =>
-    node.nodeType === 1 && /^[a-z]+$/i.test(node.nodeName)
-  );
+  const TAGS_VALIDAS = new Set([
+    'html', 'head', 'body', 'title', 'meta', 'link', 'script', 'style',
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    'p', 'div', 'span', 'strong', 'em', 'br', 'hr',
+    'ul', 'ol', 'li',
+    'table', 'thead', 'tbody', 'tr', 'td', 'th',
+    'a', 'img', 'button', 'input', 'textarea', 'label', 'form',
+    'section', 'article', 'nav', 'header', 'footer', 'main'
+  ]);
 
-  if (ehValido) {
-    preview.srcdoc = codigo;
-    container.style.display = 'block';
-  } else {
-    preview.srcdoc = ''; // limpa o preview
+  const todasAsTags = Array.from(doc.body.querySelectorAll('*'));
+
+  if (todasAsTags.length === 0) {
+    preview.srcdoc = '';
     container.style.display = 'none';
-    alert("Código inválido. Digite HTML válido como <h1>, <p>, <div> etc.");
+    alert("Nenhuma tag HTML foi encontrada. Adicione as tags desejadas ao seu código.");
+    return;
   }
+
+  const tagInvalida = todasAsTags.find(el => !TAGS_VALIDAS.has(el.tagName.toLowerCase()));
+  if (tagInvalida) {
+    preview.srcdoc = '';
+    container.style.display = 'none';
+    alert(`<${tagInvalida.tagName.toLowerCase()}> não é uma tag válida em HTML.`);
+    return;
+  }
+
+  // Se chegou aqui, está tudo certo
+  preview.srcdoc = codigo;
+  container.style.display = 'block';
 }
 
 function iniciarDitado() {
