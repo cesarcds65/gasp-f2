@@ -516,6 +516,30 @@ document.getElementById('meuBotao').addEventListener(
   }
 }
 
+    function configurarLeituraPorHover() {
+  document.body.addEventListener('mouseover', function (event) {
+    if (!leituraAtiva) return;
+
+    const alvo = event.target;
+    let texto = '';
+
+    if (alvo.tagName === 'BUTTON') {
+      texto = `Botão ${alvo.innerText.trim()}`;
+    } else if (alvo.tagName === 'INPUT' && alvo.type === 'range') {
+      texto = 'Controle deslizante';
+    } else if (alvo.tagName === 'LABEL') {
+      texto = alvo.innerText.trim();
+    } else if (['P', 'H1', 'H2', 'H3', 'SPAN'].includes(alvo.tagName)) {
+      texto = alvo.innerText.trim();
+    }
+
+    if (texto) {
+      lerTexto(texto);
+    }
+  });
+}
+
+    
     // Ajuste de velocidade da fala
     function ajustarVelocidade(valor) {
       velocidadeFala = parseFloat(valor);
@@ -941,6 +965,9 @@ function inserirEsqueletoHtml() {
 
   // 3. Inicia histórico na tela1
   history.replaceState({ tela: 'tela1' }, '', '');
+ 
+  // 4. Ativa leitura por hover (voz)
+  configurarLeituraPorHover();
 });
 
 </script>
